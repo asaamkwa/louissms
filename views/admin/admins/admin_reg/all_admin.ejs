@@ -1,0 +1,66 @@
+<%- include("../../header_footer/header"); %>
+
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Data Tables</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/sms/v1/AdminDashboard">Home</a></li>
+          <li class="breadcrumb-item">Tables</li>
+          <li class="breadcrumb-item active">Data</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">All Admins </h5>
+             
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">View</th>
+                    <th scope="col">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                    <% workers.forEach(person =>{ %>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td><%= person.fname %></td>
+                            <td><%= person.lname %></td>
+                            <td><%= person.email %></td>
+                            <td><i class="fa-solid fa-phone"></i><%= person.tel %></td>
+                            <td><i class="fa-solid fa-phone"></i><%= person.tel %></td>
+                        </tr>
+
+                    <% }); %>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+
+
+<%- include("../../header_footer/footer"); %>

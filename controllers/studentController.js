@@ -8,4 +8,7 @@ exports.getStudent = (req, res, next) => {
     //  })
 };
 
+exports.resultsTable = (req, res, next) => {
+    res.render("students/students_results");
+}
 
