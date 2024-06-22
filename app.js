@@ -9,6 +9,13 @@ const dotenv = require("dotenv");
 
 const connectDabase =require("./config/database");
 
+//setting up middleware
+const errorMiddleware = require("./middlewares/errors");
+
+//setting up errorHandler
+const errorHandler = require("./utils/errorHandler");
+
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
@@ -38,10 +45,11 @@ app.use("/sms/v1", adminAuth);
 
 
 
-
+//Middleware to handle errors
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT;
 
 const server = app.listen(PORT, () =>{
-    console.log(`Server started on port ${process.env.PORT}`);
+    console.log(`Server started on port ${process.env.PORT}, on ${process.env.NODE_ENV} mode`);
 });

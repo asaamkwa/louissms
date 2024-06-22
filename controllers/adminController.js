@@ -1,8 +1,10 @@
 const Admin = require("../models/admins");
+const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
+const ErrorHandler = require("../utils/errorHandler");
 
 
 //Register a new user => /api/v1/register
-exports.registerAdmin =  async (req, res, next) => {
+exports.registerAdmin = catchAsyncErrors ( async (req, res, next) => {
 
     const {fname, lname, email, password} = req.body;
 
@@ -13,9 +15,42 @@ exports.registerAdmin =  async (req, res, next) => {
         email,
         password
     });
+    const token = user.getJwtToken();
+    console.log(token);
 //note it will change later
      res.redirect("/sms/v1/AdminDashboard");
           
+});
+
+
+//Login user => /api/v1/login
+exports.loginAdmin = catchAsyncErrors ( async (req, res, next) => {
+    const {email, password} = req.body;
+
+    //checks if email or password is entered by user
+    if(!email || !password) {
+        return next(new ErrorHandler(`Please enter email & password.`, 400));
+    }
+
+    //Finding user in the database
+    const user = await Admin.findOne({email}).select(`+password`);
+
+    if(!user) {
+        return next(new ErrorHandler(`Invalid Email or Password.`, 401));
+    }
+
+    //check if password is correct
+    const isPasswordMatched = await user.comparedPassword(password);
+
+    if(!isPasswordMatched) {
+        return next(new ErrorHandler(`Invalid Email or Password.`, 401));
+    }
+    res.redirect("/sms/v1/AdminDashboard");
+    // sendToken(user, 200, res);
+});
+
+exports.logoutAdmin = (req, res, next) => {
+     res.render("admin/admins/admin_reg/login_admin");
 };
 
 
@@ -26,6 +61,10 @@ exports.getAdminDashboard = (req, res, next) => {
 
 exports.addAdmin = (req, res, next) => {
     res.render("admin/admins/admin_reg/add_admin");
+}
+
+exports.loginPage = (req, res, next) => {
+    res.render("admin/admins/admin_reg/login_admin");
 }
 
 exports.allAdmin = (req, res, next) => {

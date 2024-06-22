@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 
 const adminSchema = new mongoose.Schema({
@@ -31,14 +33,24 @@ const adminSchema = new mongoose.Schema({
 });
 
 //Encrypting password before saving
-// userSchema.pre("save", async function(next) {
+adminSchema.pre("save", async function(next) {
 
-//     if(!this.isModified("password")) {
-//         next();
-//     }
-//     this.password = await bcrypt.hash(this.password, 10)
+    if(!this.isModified("password")) {
+        next();
+    }
+    this.password = await bcrypt.hash(this.password, 10)
 
-// });
+});
+//Return JSON Web Token
+adminSchema.methods.getJwtToken = function(){
+    return jwt.sign({id : this._id}, process.env.JWT_SECRET, {
+        expiresIn : process.env.JWT_EXPIRES_TIME 
+    })
+};
 
+//compare user password in database password
+adminSchema.methods.comparedPassword = async function(enterPassword) {
+    return await bcrypt.compare(enterPassword, this.password);
+};
 
 module.exports = mongoose.model("admin", adminSchema);

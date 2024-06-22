@@ -7,6 +7,9 @@ const {
     addAdmin,
     registerAdmin,
     allAdmin,
+    loginAdmin,
+    loginPage,
+    logoutAdmin,
 
     //students 
     addStudents,
@@ -23,6 +26,9 @@ router.route("/AdminDashboard").get(getAdminDashboard);
 router.route("/add/admin").get(addAdmin);
 router.route("/register/admin").post(registerAdmin);
 router.route("/all/admins").get(allAdmin);
+router.route("/loginPage").get(loginPage);
+router.route("/login/admin").post(loginAdmin);
+router.route("/logout/admin").get(logoutAdmin);
 
 
 
