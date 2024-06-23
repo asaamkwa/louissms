@@ -21,10 +21,12 @@ const {
 
 } = require("../controllers/adminController");
 
+const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
+
 //all about admins
-router.route("/AdminDashboard").get(getAdminDashboard);
+router.route("/AdminDashboard").get(isAuthenticatedUser, getAdminDashboard);
 router.route("/add/admin").get(addAdmin);
-router.route("/register/admin").post(registerAdmin);
+router.route("/register/admin").post(isAuthenticatedUser, authorizeRoles('admin'), registerAdmin);
 router.route("/all/admins").get(allAdmin);
 router.route("/loginPage").get(loginPage);
 router.route("/login/admin").post(loginAdmin);

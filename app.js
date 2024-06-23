@@ -6,6 +6,7 @@ const app = express();
 
 //reqiure config env file
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
 const connectDabase =require("./config/database");
 
@@ -21,11 +22,18 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
 
 
+//setting up bodyparse
+app.use(express.json());
+
+//setting cookie parser
+app.use(cookieParser());
+
 //setting up config.env file variables
 dotenv.config({path : "./config/config.env"});
 
 //connecting database
 connectDabase();
+
 
 
 

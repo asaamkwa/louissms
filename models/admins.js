@@ -25,6 +25,14 @@ const adminSchema = new mongoose.Schema({
         minlength : [8, "Your password must be at least 8 characters"],
         select : false
     },
+     role : {
+        type : String,
+        enum : {
+            values : ["admin", "teachers"],
+            message : "Please select correct role"
+        },
+        default : "admin"
+    },
     createAt : {
         type : Date,
         default : Date.now
